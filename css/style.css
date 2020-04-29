@@ -25,14 +25,9 @@ body {
   text-align: center;
   border: 1px solid #999;
 }
-.slide.locked { background: rgba(255,255,0,0.5); }
+.locked .slide { background: #FFFF7F; }
 .slick-prev, .slick-next {
   position: absolute;
   bottom:0;
 }
 .slick-next { left:80px; }
-
-.slick-slide.fixed {
-	position: fixed;
-
-}
