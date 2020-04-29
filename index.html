@@ -1,1 +1,117 @@
-<h1>Hello, world</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Slider</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="slider">
+    <div class="slide">1</div>
+    <div class="slide">2</div>
+    <div class="slide">3</div>
+    <div class="slide">4</div>
+    <div class="slide">5</div>
+    <div class="slide">6</div>
+    <div class="slide">7</div>
+    <div class="slide">8</div>
+    <div class="slide">9</div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+<script>
+	$(function() {
+		$(document).ready(function(){
+
+		$('.slider').slick({
+			dots: false,
+			infinite: false,
+			speed: 0,
+			slidesToShow: 5,
+			slidesToScroll: 1,
+			swipe: false,
+			responsive: [
+				{
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 3,
+					}
+				},
+				{
+					breakpoint: 600,
+					settings: {
+						slidesToShow: 2,
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+					}
+				}
+			]
+			});
+
+			if ($(window).width() > 479) {
+				$('.slide').on('click', function() {
+					$('.slide').not(this).removeClass('locked');
+					$(this).toggleClass('locked');
+				});
+			}
+
+
+			$(document).on('click', '.slick-prev', function() {
+				$('.locked').each(function() {
+					var slide = $(this).closest('.slick-slide'),
+					prevSlide = slide.prev();
+				
+
+					if (!$('.slick-prev').hasClass('slick-disabled')) {
+					
+						prevSlide.before(slide);
+
+						$('.slider .slick-slide').each(function(index) {
+							$(this).attr('data-slick-index', index);
+						});
+
+						$('.slick-next').removeClass('disabled');
+					} else if (!$('.slick-prev').hasClass('disabled')) {
+						prevSlide.before(slide);
+						$('.slick-prev').addClass('disabled')
+					}
+				});
+			});
+
+			$(document).on('click', '.slick-next:not(.disabled)', function() {
+				$('.locked').each(function() {
+					var slide = $(this).closest('.slick-slide'),
+					nextSlide = slide.next();
+
+					if (!$('.slick-next').hasClass('slick-disabled')) {
+						nextSlide.after(slide);
+
+						$('.slider .slick-slide').each(function(index) {
+							$(this).attr('data-slick-index', index);
+						});
+
+						$('.slick-prev').removeClass('disabled');
+					} else if (!$('.slick-next').hasClass('disabled')) {
+						nextSlide.after(slide);
+						$('.slick-next').addClass('disabled')
+					}
+				});
+			});
+
+
+		});
+	});
+</script>
+</body>
+</html>
