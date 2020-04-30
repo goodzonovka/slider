@@ -27,8 +27,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 
 <script>
-	$(function() {
-		$(document).ready(function(){
+	$(document).ready(function(){
 
 		$('.slider').slick({
 			dots: false,
@@ -36,6 +35,7 @@
 			speed: 300,
 			slidesToShow: 5,
 			slidesToScroll: 1,
+			swipe: false,
 			responsive: [
 				{
 					breakpoint: 1024,
@@ -56,14 +56,16 @@
 					}
 				}
 			]
-			});
+		});
 
 		$(window).resize(function() {
-			$('.active').removeClass('active');
-			$('.locked').remove();
+			if ($('div').is('.locked')) {
+				$('.locked .slide').trigger('click');
+			}
+			
 
 			if ($(window).width() < 480) {
-				$(document).unbind('click');
+				
 			} else {
 				$(document).on('click', '.slide', function() {
 					var slide = $(this).parent().parent();
@@ -88,52 +90,54 @@
 			}
 		});
 
-			
-			$(document).on('click', '.slide', function() {
-				var slide = $(this).parent().parent();
-				if (slide.hasClass('locked')) {
-					
-					$('.active .slide').text($(this).text());
-					$('.active').removeClass('active');
-					slide.remove();
-				} else {
-					$('.active').removeClass('active');
-					$('.locked').remove();
-
-					slide.addClass('active');
-					$('body').append(slide.clone().removeClass('slick-slide active').addClass('locked').css({
-						'position': 'fixed',
-						'left': slide.offset().left,
-						'top': slide.offset().top
-					}));
-
+		
+		$(document).on('click', '.slide', function() {
+			var slide = $(this).parent().parent();
+			if (slide.hasClass('locked')) {
+				
+				$('.active .slide').text($(this).text());
+				$('.active').removeClass('active');
+				slide.remove();
+			} else {
+				if ($('div').is('.locked')) {
+					$('.locked .slide').trigger('click');
 				}
-			});
-			
-			$(document).on('click', '.slick-prev', function() {
-				if (!$(this).hasClass('disabled')) {
-					var active_slide = $('.active');
 
-					$('.active .slide').text($('.active').prev().find('.slide').text());
-					$('.active').prev().addClass('active');
-					active_slide.removeClass('active');
-					if ($(this).hasClass('slick-disabled')) $(this).addClass('disabled');
-					$('.slick-next').removeClass('disabled');
-				}
-			});
 
-			$(document).on('click', '.slick-next', function() {
-				if (!$(this).hasClass('disabled')) {
-					var active_slide = $('.active');
+				slide.addClass('active');
+				$('body').append(slide.clone().removeClass('slick-slide active').addClass('locked').css({
+					'position': 'fixed',
+					'left': slide.offset().left,
+					'top': slide.offset().top
+				}));
 
-					$('.active .slide').text($('.active').next().find('.slide').text());
-					$('.active').next().addClass('active');
-					active_slide.removeClass('active');
-					if ($(this).hasClass('slick-disabled')) $(this).addClass('disabled');
-					$('.slick-prev').removeClass('disabled');
-				}
-			});
+			}
 		});
+		
+		$(document).on('click', '.slick-prev', function() {
+			if (!$(this).hasClass('disabled')) {
+				var active_slide = $('.active');
+
+				$('.active .slide').text($('.active').prev().find('.slide').text());
+				$('.active').prev().addClass('active');
+				active_slide.removeClass('active');
+				if ($(this).hasClass('slick-disabled')) $(this).addClass('disabled');
+				$('.slick-next').removeClass('disabled');
+			}
+		});
+
+		$(document).on('click', '.slick-next', function() {
+			if (!$(this).hasClass('disabled')) {
+				var active_slide = $('.active');
+
+				$('.active .slide').text($('.active').next().find('.slide').text());
+				$('.active').next().addClass('active');
+				active_slide.removeClass('active');
+				if ($(this).hasClass('slick-disabled')) $(this).addClass('disabled');
+				$('.slick-prev').removeClass('disabled');
+			}
+		});
+
 	});
 </script>
 </body>
